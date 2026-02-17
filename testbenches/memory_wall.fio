@@ -1,0 +1,12 @@
+# The SIFI test for the Memory Wall
+[global]
+ioengine=libaio
+direct=1
+runtime=10
+time_based
+
+[sequential-fill]
+rw=write
+bs=1M
+size=128M
+filename=/tmp/testfile

@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Data and Logs (Do not push large datasets)
+results/*.csv
+results/*.json
+results/raw_logs/
+
+# OS/IDEs
+.DS_Store
+.vscode/
