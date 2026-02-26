@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  lab:
+    image: edge-to-core/lab:latest
+    build:
+      context: .
+      dockerfile: testbenches/Dockerfile
+      x-bake:
+        tags:
+          - edge-to-core/lab:latest
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - linux/ppc64le
+    container_name: edge-to-core-lab
+    volumes:
+      - ./results:/app/results
+    environment:
+      - ENABLE_SIFI=false
+    tty: true
+

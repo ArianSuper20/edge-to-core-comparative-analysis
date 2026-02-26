@@ -1,18 +1,15 @@
-#This is the script that deploy the code using fabric
-from fabric import Connection, task
-
 @task
-def deploy(c):
-    """Deploy the Docker container to the remote target (Pi or Mainframe)."""
-    print(f"Deploying to: {c.host}")
-    # Pull the latest code from your GitHub
-    c.run("cd ~/assurance-harness && git pull origin main")
-    # Build and run the bench
-    c.run("docker build -t assurance-harness ./testbenches")
-    print("Deployment Complete.")
-
-@task
-def run_test(c):
-    """Execute the stress test inside the container."""
-    print("Starting Stress Test...")
-    c.run("docker run --rm assurance-harness python3 /app/core/discovery.py")
+def run_bench(c, sifi=False):
+    """Run the bench normally, or with SIFI if specified."""
+    sifi_val = "true" if sifi else "false"
+    
+    print(f"Starting iteration (SIFI={sifi_val}) on {c.host}...")
+    
+    # Passing the choice into the container via -e (environment variable)
+    result = c.run(f"docker run --rm -e ENABLE_SIFI={sifi_val} assurance-harness", warn=True)
+    
+    if result.failed:
+        print(f"Iteration on {c.host} failed as expected. Measuring recovery...")
+        # (You can trigger your recovery logic here)
+    else:
+        print(f"Iteration on {c.host} completed successfully.")

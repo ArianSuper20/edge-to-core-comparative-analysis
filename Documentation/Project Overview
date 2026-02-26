@@ -1,47 +1,19 @@
-Empirical Analysis of the Memory Wall: Cross-Platform Performance Scaling under SIFI-Induced Stress
-or
-Enterprise ISA Resilience: Validating I/O Saturation and Memory Wall Deltas in Power10 vs. Commodity Architectures
-*title yet to be confirmed with Advisor
+Project Overview
 
-1. Executive Summary
-The goal of this project is to develop an automated validation framework that identifies "Workload Tipping Points", the specific thresholds where enterprise-grade hardware (IBM Power) justifies its architectural cost over commodity hardware (x86/ARM64). By measuring I/O saturation and memory bandwidth deltas, this project quantifies the "Mainframe-class" reliability of Power Systems in a modern, data-heavy world.
-The Strategy:
-•	Performance Scaling: Comparing the Open Memory Interface (OMI) and Matrix Math Accelerator (MMA) of Power10 against standard DDR5/AVX-512 implementations.
-•	SIFI Resilience: Using Software-Implemented Fault Injection to prove that enterprise firmware (PowerVM) recovers faster from systemic stress than consumer-grade OS kernels.
+What it does
+------------
+Automated validation framework that finds "Workload Tipping Points": where commodity hardware (x86, ARM64) hits the Memory Wall and enterprise hardware (IBM Power10) keeps scaling. Measures performance deltas and resilience (MTTR under fault injection).
 
-2. The Tri-Architecture Testing Lab
-To ensure results are statistically significant, the framework will execute identical stress tests across three distinct tiers:
-Tier	      Architecture	Hardware Example	Access Strategy
-Edge        ARM64	        Raspberry Pi 5	  Local Hardware
-Commodity	  x86_64	      AMD Laptop	      Local Hardware
-Enterprise	ppc64le	      IBM Power10      	OSU OpenPower Lab / IBM PowerVS
+Lab
+---
+Same stress tests on three tiers: Edge (Pi 5 / ARM64), Commodity (x86 laptop), Enterprise (Power10 / ppc64le).
 
-3. Technical Pillars & Engineering Goals
-Pillar 1: The "Memory Wall" Challenge
-•	Activity: Benchmarking memory-to-CPU throughput using stream and sysbench.
-•	Goal: Identify the -thread count where x86/ARM64 latencies spike due to memory bus saturation, while Power10 maintains linear scaling.
-Pillar 2: SIFI & Resilience Validation
-•	Activity: Injecting simulated system faults, such as resource contention and unrelated process interference, using Software-Implemented Fault Injection (SIFI) tools.
-•	Goal: Measure the Mean Time to Recovery (MTTR) and identify the "Tipping Point" where Power10’s hardware-level error handling provides more predictable recovery than consumer-grade OS kernels.
-Pillar 3: Hardware Acceleration (MMA vs. SIMD) - OPTIONAL
-•	Activity: Executing high-concurrency matrix-math and cryptographic workloads using libraries optimized for both Power10 and commodity architectures.
-•	Goal: Quantify the throughput delta of the Power10 Matrix Math Accelerator (MMA) versus standard SIMD (AVX/NEON) instructions to prove Power10’s superior efficiency in AI and security tasks.
+Pillars
+-------
+1. Capability — CPU/memory throughput scaling (stress-ng, thread sweeps).
+2. Resilience — SIFI fault injection; measure Mean Time to Recovery (MTTR).
+3. Efficiency — I/O saturation and memory-wall behavior (fio, block-size sweeps).
 
-4. Semester Roadmap (Spring 2026)
-•	Phase 1: Foundation (February): * Establish baseline telemetry on Pi 5 and x86 Laptop.
-o	Pivot: Request access to the Oregon State University (OSU) OpenPower Lab
-•	Phase 2: The Harness (March): * Finalize the Python Test Harness (Architecture-aware logic).
-o	Map requirements to the IBM Power Systems Assurance quality standards.
-•	Phase 3: Validation (April): * Execute SIFI scripts on Power10.
-o	Collect "Tipping Point" data and draw conclusions
-•	Phase 4: Closure (May): * Deliver the Architecture-Aware Analysis Report.
-
-5. Final Deliverables: What do you hand in?
-1.	Automated Validation Harness: A GitHub repo with Python scripts that can "stress-test" any Linux server and output a standardized CSV of performance metrics.
-2.	The "Tipping Point" Data Visualization: A series of scatter plots and heatmaps showing exactly where the "Commodity" architectures fail and "Enterprise" hardware continues to scale.
-3.	The Resilience Log: A detailed comparison of how the system handles faults (e.g., "Under a 90% memory load, Power10 recovered in 1.2s vs. 4.5s for x86").
-4.	Hardware Assurance Portfolio: A document explaining how your testing methodology ensures the reliability of Power Systems—perfect for your internship manager.
-
-WHY IS THIS IMPORTANT?
-This project is an Automated Hardware Assurance Framework that identifies the "Workload Tipping Points" where commodity architectures (x86 and ARM64) succumb to the Memory Wall, while enterprise silicon (IBM Power10) maintains deterministic performance. By utilizing Software-Implemented Fault Injection (SIFI), we are moving beyond raw speed to quantify Resilience and Mean Time to Recovery (MTTR) under systemic stress. This is critical because, in mission-critical environments like global banking or real-time AI, the "best" system is not the one that is fastest under ideal conditions, but the one that provides the most predictable degradation when pushed to its architectural limits.
-
+Deliverables
+------------
+Validation harness (Python + Docker), tipping-point visualizations, resilience comparison (e.g. Power10 vs x86 recovery times), and an assurance methodology write-up.
